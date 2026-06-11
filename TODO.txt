@@ -1,0 +1,79 @@
+TODO: Improve Analytics Dashboard
+
+1. Fix Overview Status Counts
+
+   * Ensure aggregation uses ObjectId for user matching.
+   * Verify status counts are returned correctly in overview API.
+
+2. Separate Current Status from Performance Metrics
+
+   * Current Status Distribution should show the latest status of each application:
+
+     * Applied
+     * Interview
+     * Assignment
+     * HR Round
+     * Technical Round
+     * Rejected
+     * Offer Received
+     * Selected
+
+3. Add Funnel Analytics
+
+   * Track total applications submitted.
+   * Track how many applications reached at least one interview stage.
+   * Track how many resulted in selection/offer.
+   * Preserve these counts even when the current status changes.
+
+4. Add Dashboard KPIs
+
+   * Total Applications
+   * Interview Calls
+   * Offers Received
+   * Selections
+   * Rejections
+
+5. Update Conversion Metrics
+
+   * Interview Rate = (Applications that reached Interview Stage / Total Applications) × 100
+   * Success Rate = (Selected Applications / Total Applications) × 100
+   * Offer Rate = (Offer Received / Total Applications) × 100
+
+6. Example Expected Output
+   Scenario:
+
+   * Applied to 10 jobs
+   * 5 reached interview
+   * 3 selected
+
+   Current Status Distribution:
+
+   * Applied: 5
+   * Interview: 2
+   * Selected: 3
+
+   Performance Metrics:
+
+   * Total Applications: 10
+   * Interview Calls: 5
+   * Selected: 3
+   * Interview Rate: 50%
+   * Success Rate: 30%
+
+7. Future Enhancement
+
+   * Store status history for every application.
+   * Create analytics based on status transitions.
+   * Build application funnel visualization:
+     Applied → Interview → Offer → Selected.
+
+==================================================================================================================
+
+Timeline in job details
+Applied Date
+—
+Follow Up Date
+—
+Interview Date
+—
+Offer Deadline

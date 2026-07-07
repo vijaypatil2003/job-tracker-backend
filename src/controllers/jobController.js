@@ -83,7 +83,7 @@ const buildQuery = (userId, queryParams) => {
 exports.getJobs = async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
-    const limit = Math.min(parseInt(req.query.limit) || 10, 100);
+    const limit = Math.min(parseInt(req.query.limit) || 20, 100);
     const skip = (page - 1) * limit;
 
     const filter = buildQuery(req.user.id, req.query);
@@ -124,27 +124,34 @@ exports.getJobs = async (req, res, next) => {
 
 // @desc    Get single job
 // @route   GET /api/v1/jobs/:id
-  exports.getJob = async (req, res, next) => {
-    try {
-      const job = await JobApplication.findOne({
-        _id: req.params.id,
-        user: req.user.id,
-      })
-        .populate("resumeUsed", "label fileName filePath")
-        .populate("activityLog.performedBy", "name");
+exports.getJob = async (req, res, next) => {
+  try {
+    const job = await JobApplication.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    })
+      .populate("resumeUsed", "label fileName filePath")
+      .populate("activityLog.performedBy", "name");
 
-      if (!job) return next(new AppError("Job application not found.", 404));
-      sendSuccess(res, "Job fetched", job);
-    } catch (err) {
-      next(err);
-    }
-  };
+    if (!job) return next(new AppError("Job application not found.", 404));
+    sendSuccess(res, "Job fetched", job);
+  } catch (err) {
+    next(err);
+  }
+};
 
 // @desc    Create job application
 // @route   POST /api/v1/jobs
 exports.createJob = async (req, res, next) => {
   try {
-    const job = await JobApplication.create({ ...req.body, user: req.user.id });
+    const jobData = { ...req.body, user: req.user.id };
+
+    // Default appliedDate to today if not provided
+    if (!jobData.appliedDate) {
+      jobData.appliedDate = new Date();
+    }
+
+    const job = await JobApplication.create(jobData);
 
     // Update user streak
     req.user.updateStreak();

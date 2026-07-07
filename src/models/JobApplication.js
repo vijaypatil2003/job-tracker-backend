@@ -128,6 +128,19 @@ const jobApplicationSchema = new mongoose.Schema(
     },
     resumeLabel: { type: String }, // Fallback label if no Resume doc
 
+    // HR Call Status — tracks outreach to HR
+    // TODO: delete this comment when in production
+    hrCallStatus: {
+      type: String,
+      enum: [
+        "not_called",
+        "called",
+        "responded_opening",
+        "responded_no_opening",
+      ],
+      default: "not_called",
+    },
+
     // Notes
     notes: { type: String, maxlength: [5000, "Notes too long"] },
     companyResearchNotes: { type: String },
